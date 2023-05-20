@@ -1,4 +1,4 @@
-package bubbleCandle
+package candlePrintGo
 
 import (
 	"fmt"

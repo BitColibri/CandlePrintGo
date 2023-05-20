@@ -8,48 +8,19 @@ import (
 )
 
 const (
-	SYMBOL_STICK              = "│"
-	SYMBOL_CANDLE             = "┃"
-	SYMBOL_HALF_TOP           = "╽"
-	SYMBOL_HALF_BOTTOM        = "╿"
-	SYMBOL_HALF_CANDLE_TOP    = "╻"
-	SYMBOL_HALF_CANDLE_BOTTOM = "╹"
-	SYMBOL_HALF_STICK_TOP     = "╷"
-	SYMBOL_HALF_STICK_BOTTOM  = "╵"
-	SYMBOL_NOTHING            = " "
+	_symbolStick            = "│"
+	_symbolCandle           = "┃"
+	_symbolHalfTop          = "╽"
+	_symbolHalfBottom       = "╿"
+	_symbolHalfCandleTop    = "╻"
+	_symbolHalfCandleBottom = "╹"
+	_symbolHalfStickTop     = "╷"
+	_symbolHalfStickBottom  = "╵"
+	_symbolEmpty            = " "
+
+	_bearColor = "#E88388"
+	_bullColor = "#A8CC8C"
 )
-
-type Candle struct {
-	IsBullish bool
-	Open      float64
-	High      float64
-	Low       float64
-	Close     float64
-}
-
-func NewCandle(o, h, l, c float64) *Candle {
-	return &Candle{
-		IsBullish: c > o,
-		Open:      o,
-		High:      h,
-		Low:       l,
-		Close:     c,
-	}
-}
-
-func (c Candle) Top() float64 {
-	if c.IsBullish {
-		return c.Close
-	}
-	return c.Open
-}
-
-func (c Candle) Bottom() float64 {
-	if c.IsBullish {
-		return c.Open
-	}
-	return c.Close
-}
 
 type CandleChart struct {
 	profile     termenv.Profile
@@ -94,46 +65,46 @@ func (c *CandleChart) renderCandle(tick *Candle, height float64) string {
 
 	if math.Ceil(top) > height && height >= math.Floor(topCandle) {
 		if topCandle-height > 0.75 {
-			return c.colorCandle(SYMBOL_CANDLE, tick.IsBullish)
+			return c.colorCandle(_symbolCandle, tick.IsBullish)
 		} else if topCandle-height > 0.25 {
 			if top-height > 0.75 {
-				return c.colorCandle(SYMBOL_HALF_TOP, tick.IsBullish)
+				return c.colorCandle(_symbolHalfTop, tick.IsBullish)
 			}
-			return c.colorCandle(SYMBOL_HALF_CANDLE_TOP, tick.IsBullish)
+			return c.colorCandle(_symbolHalfCandleTop, tick.IsBullish)
 		} else {
 			if top-height > 0.75 {
-				return c.colorCandle(SYMBOL_STICK, tick.IsBullish)
+				return c.colorCandle(_symbolStick, tick.IsBullish)
 			} else if top-height > 0.25 {
-				return c.colorCandle(SYMBOL_HALF_STICK_TOP, tick.IsBullish)
+				return c.colorCandle(_symbolHalfStickTop, tick.IsBullish)
 			}
-			return SYMBOL_NOTHING
+			return _symbolEmpty
 		}
 	} else if math.Floor(topCandle) >= height && height >= math.Ceil(bottomCandle) {
-		return c.colorCandle(SYMBOL_CANDLE, tick.IsBullish)
+		return c.colorCandle(_symbolCandle, tick.IsBullish)
 	} else if math.Ceil(bottomCandle) >= height && height >= math.Floor(bottom) {
 		if bottomCandle-height < 0.25 {
-			return c.colorCandle(SYMBOL_CANDLE, tick.IsBullish)
+			return c.colorCandle(_symbolCandle, tick.IsBullish)
 		} else if bottomCandle-height < 0.75 {
 			if bottom-height < 0.25 {
-				return c.colorCandle(SYMBOL_HALF_BOTTOM, tick.IsBullish)
+				return c.colorCandle(_symbolHalfBottom, tick.IsBullish)
 			}
-			return c.colorCandle(SYMBOL_HALF_CANDLE_BOTTOM, tick.IsBullish)
+			return c.colorCandle(_symbolHalfCandleBottom, tick.IsBullish)
 		} else {
 			if bottom-height < 0.25 {
-				return c.colorCandle(SYMBOL_STICK, tick.IsBullish)
+				return c.colorCandle(_symbolStick, tick.IsBullish)
 			} else if bottom-height < 0.75 {
-				return c.colorCandle(SYMBOL_HALF_STICK_BOTTOM, tick.IsBullish)
+				return c.colorCandle(_symbolHalfStickBottom, tick.IsBullish)
 			}
-			return SYMBOL_NOTHING
+			return _symbolEmpty
 		}
 	}
-	return SYMBOL_NOTHING
+	return _symbolEmpty
 }
 
 func (c *CandleChart) colorCandle(symbol string, isBulish bool) string {
-	s := termenv.String(symbol).Foreground(c.profile.Color("#E88388"))
+	s := termenv.String(symbol).Foreground(c.profile.Color(_bearColor))
 	if isBulish {
-		s = termenv.String(symbol).Foreground(c.profile.Color("#A8CC8C"))
+		s = termenv.String(symbol).Foreground(c.profile.Color(_bullColor))
 	}
 	return fmt.Sprintf(`%v`, s)
 }

@@ -13,7 +13,7 @@ CandlePrintGo is a small package that lets you print candle charts in the termin
 
 ## Usage
 
-Create a `CandleChart` passing an array of `Candle` and `height.
+Create a `CandleChart` passing an array of `Candle` and `height`.
 
 ```go
 package main

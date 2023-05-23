@@ -22,15 +22,29 @@ const (
 	_halfBottom = 0.25
 )
 
+type Chart interface {
+	Render() string
+}
+
+var _ Chart = &CandleChart{}
+
 type CandleChart struct {
-	profile     ColorProfile
+	profile     *ColorProfile
 	height      float64
 	data        []Candle
 	chartBottom float64
 	chartTop    float64
 }
 
-func NewCandleChart(data []Candle, height float64) *CandleChart {
+type Option func(chart *CandleChart)
+
+func WithColorProfile(profile *ColorProfile) Option {
+	return func(c *CandleChart) {
+		c.profile = profile
+	}
+}
+
+func NewCandleChart(data []Candle, height float64, opts ...Option) *CandleChart {
 	min := math.MaxFloat64
 	max := math.SmallestNonzeroFloat64
 
@@ -39,17 +53,18 @@ func NewCandleChart(data []Candle, height float64) *CandleChart {
 		max = math.Max(max, v.Top())
 	}
 
-	return &CandleChart{
+	chart := &CandleChart{
 		profile:     DefaultColorScheme,
 		height:      height,
 		data:        data,
 		chartBottom: min,
 		chartTop:    max,
 	}
-}
+	for _, o := range opts {
+		o(chart)
+	}
 
-func (c *CandleChart) Data(data []Candle) {
-	c.data = data
+	return chart
 }
 
 func (c *CandleChart) toHeightUnits(x float64) float64 {
@@ -112,20 +127,10 @@ func (c *CandleChart) colorCandle(symbol string, isBulish bool) string {
 func (c *CandleChart) Render() string {
 	r := "\n"
 	for i := c.height; i >= 0; i-- {
-		//r += c.PrintValue(i) // TODO: dont touch this line, finish PrintValue
 		for _, v := range c.data {
 			r += c.renderCandle(v, float64(i))
 		}
 		r += "\n"
 	}
 	return r
-}
-
-func (c *CandleChart) PrintValue(i float64) string {
-	if int(i)%4 == 0 {
-		//calc := c.chartBottom + (float64(i) * (c.chartTop - c.chartBottom) / c.height)
-		//
-		//return fmt.Sprintf("%.5f", calc)
-	}
-	return "         "
 }

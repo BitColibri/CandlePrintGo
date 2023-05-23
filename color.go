@@ -9,12 +9,20 @@ const (
 
 type ColorProfile struct {
 	p         termenv.Profile
-	bearColor string
 	bullColor string
+	bearColor string
 }
 
-var DefaultColorScheme = ColorProfile{
+func NewColorProfile(profile termenv.Profile, bullColor, bearColor string) *ColorProfile {
+	return &ColorProfile{
+		p:         profile,
+		bullColor: bullColor,
+		bearColor: bearColor,
+	}
+}
+
+var DefaultColorScheme = &ColorProfile{
 	p:         termenv.ColorProfile(),
-	bearColor: _bearColor,
 	bullColor: _bullColor,
+	bearColor: _bearColor,
 }

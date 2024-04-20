@@ -32,7 +32,7 @@ func NewCandleBar(o, h, l, c float64) *CandleBar {
 }
 
 func (c CandleBar) Open() float64 {
-	return c.close
+	return c.open
 }
 
 func (c CandleBar) High() float64 {

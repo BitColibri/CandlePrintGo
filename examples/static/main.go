@@ -34,10 +34,10 @@ func readData(path string) ([]candlePrintGo.Candle, error) {
 }
 
 func main() {
-	data, err := readData("./examples/data.csv")
+	data, err := readData("./examples/TSLA.csv")
 	if err != nil {
 		panic(err)
 	}
-	chart := candlePrintGo.NewCandleChart(data, 25)
+	chart := candlePrintGo.NewCandleChart(data[:200], 25)
 	fmt.Println(chart.Render())
 }

@@ -127,10 +127,24 @@ func (c *CandleChart) colorCandle(symbol string, isBulish bool) string {
 func (c *CandleChart) Render() string {
 	r := "\n"
 	for i := c.height; i >= 0; i-- {
+		r += c.printPrice(i)
 		for _, v := range c.data {
 			r += c.renderCandle(v, float64(i))
 		}
 		r += "\n"
 	}
 	return r
+}
+
+func (c *CandleChart) printPrice(line float64) string {
+	if int64(line)%4 == 0 {
+		return formatPrice(c.chartBottom+(line*(c.chartTop-c.chartBottom)/c.height)) + "|"
+	}
+	return "         |"
+
+}
+
+func formatPrice(value float64) string {
+	formatted := fmt.Sprintf("%.2f", value)
+	return fmt.Sprintf("%8s ", formatted)
 }

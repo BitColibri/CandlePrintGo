@@ -42,7 +42,6 @@ func main() {
 Check the [example](examples/static/main.go)
 
 ## To Do
-* Print price alongside the candles
 * Dynamic chart example
 * Develop BubbleTea component
 

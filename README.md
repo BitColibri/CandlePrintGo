@@ -1,7 +1,7 @@
 # CandlePrintGo
 
 <div align="center">
-    <img src="docs/candleChartGo.png" />
+    <img src="docs/candleChartGo.png" width="50%" />
 </div>
 
 CandlePrintGo is a small package that lets you print candle charts in the terminal.

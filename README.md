@@ -1,11 +1,14 @@
-<div align="center">
-    <img src="docs/candleChartGo.png" />
-    <img src="docs/Screenshot.png" />
-</div>
-
 # CandlePrintGo
 
+<div align="center">
+    <img src="docs/candleChartGo.png" />
+</div>
+
 CandlePrintGo is a small package that lets you print candle charts in the terminal.
+
+<div align="center">
+    <img src="docs/Screenshot.png" />
+</div>
 
 ## Features
  * Color profile selection
